@@ -1,0 +1,22 @@
+{
+  "name": "babel-plugin-transform-require",
+  "version": "1.0.0",
+  "description": "A babel plugin to turn ES5 require call to ES6/7",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "es5",
+    "es6",
+    "es2015",
+    "es7",
+    "es2016",
+    "transpiler",
+    "transplie",
+    "require",
+    "babel"
+  ],
+  "author": "Rajat Vijay",
+  "license": "MIT"
+}
