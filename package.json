@@ -4,7 +4,10 @@
   "description": "A babel plugin to turn ES5 require call to ES6/7",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src/ --out-dir lib/",
+    "try": "npm run build && node try/run.js try/example.js",
+    "debug": "npm run build && node --inspect --debug-brk try/run.js try/example.js"
   },
   "keywords": [
     "es5",
@@ -18,5 +21,11 @@
     "babel"
   ],
   "author": "Rajat Vijay",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "lodash": "^4.17.5",
+    "recast": "^0.14.7"
+  }
 }
