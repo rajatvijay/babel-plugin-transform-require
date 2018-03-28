@@ -116,8 +116,9 @@ const isIdentifier = matchesAst({
 });
 
 // matches Property with Identifier key and value (possibly shorthand)
+// TODO: Rename it to be isObjectProperty
 const isSimpleProperty = matchesAst({
-  type: 'Property',
+  type: 'ObjectProperty',
   key: isIdentifier,
   computed: false,
   value: isIdentifier
