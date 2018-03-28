@@ -11,6 +11,11 @@ var h = require("i").j;
 var k = require("l").k;
 
 var m = require("n").o, p = "q";
+
+var {default: foo} = require("foolib");
+
+var {default: foo, bar: bar} = require("foolib");
+
 function getName() {
   return "My name";
 }

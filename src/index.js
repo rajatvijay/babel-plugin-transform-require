@@ -1,4 +1,5 @@
 import {isVarWithRequireCalls, matchRequire, matchRequireWithProperty} from './helpers.js';
+import {types as t} from "babel-core";
 
 module.exports = function(babel) {
   return {
@@ -9,7 +10,7 @@ module.exports = function(babel) {
           if (isVarWithRequireCalls(path.node)) {
             let decalrationKind = path.node.kind;
             let declarations = path.node.declarations.map(
-              dec => varToImport(dec, decalrationKind, babel.types)
+              dec => varToImport(dec, decalrationKind)
             )
 
             return path.replaceWithMultiple(declarations);
@@ -20,17 +21,13 @@ module.exports = function(babel) {
   }
 }
 
-function varToImport(dec, kind, babelTypes) {
-  let t = babelTypes;
+function varToImport(dec, kind) {
   let m;
-  debugger;
   if ((m = matchRequire(dec))) {
-    // if (m.id.type === 'ObjectPattern') {
-    //   let specifiers = m.id.properties.map();
-    //   return t.importDeclaration([t.importNamespaceSpecifier(m.id, m.id)], m.sources[0]);
-    // }
-    // else 
-    if (m.id.type === 'Identifier') {
+    if (m.id.type === 'ObjectPattern') {
+      return patternToNamedImport(m);
+    }
+    else if (m.id.type === 'Identifier') {
       return t.importDeclaration([t.importDefaultSpecifier(m.id)], m.sources[0]);
     }
   }
@@ -38,7 +35,6 @@ function varToImport(dec, kind, babelTypes) {
     if (m.property.name === 'default') {
       return t.importDeclaration([t.importDefaultSpecifier(m.id)], m.sources[0]);
     }
-    debugger;
     return t.importDeclaration([t.importSpecifier(m.id, m.property)], m.sources[0])
   }
   else {
@@ -46,35 +42,14 @@ function varToImport(dec, kind, babelTypes) {
   }
 }
 
-// function patternToNamedImport({id, sources}) {
-//   return new ImportDeclaration({
-//     specifiers: id.properties.map(({key, value}) => {
-//       return createImportSpecifier({
-//         local: value,
-//         imported: key
-//       });
-//     }),
-//     source: sources[0]
-//   });
-// }
-
-// function identifierToDefaultImport({id, sources}) {
-//   return new ImportDeclaration({
-//     specifiers: [new ImportDefaultSpecifier(id)],
-//     source: sources[0],
-//   });
-// }
-
-// function propertyToNamedImport({id, property, sources}) {
-//   return new ImportDeclaration({
-//     specifiers: [createImportSpecifier({local: id, imported: property})],
-//     source: sources[0],
-//   });
-// }
-
-// function createImportSpecifier({local, imported}) {
-//   if (imported.name === 'default') {
-//     return new ImportDefaultSpecifier(local);
-//   }
-//   return new ImportSpecifier({local, imported});
-// }
+function patternToNamedImport({id, sources}) {
+  return t.importDeclaration(
+    id.properties.map(({key, value}) => {
+      if (key.name === 'default') {
+        return t.importDefaultSpecifier(value);
+      }
+      return t.importSpecifier(value, key)
+    }),
+    sources[0]
+  )
+}
