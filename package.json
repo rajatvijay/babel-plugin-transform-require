@@ -2,7 +2,7 @@
   "name": "babel-plugin-transform-require",
   "version": "1.0.0",
   "description": "A babel plugin to turn ES5 require call to ES6/7",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src/ --out-dir lib/",
