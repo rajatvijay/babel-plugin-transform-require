@@ -27,5 +27,8 @@
     "babel-preset-env": "^1.6.1",
     "lodash": "^4.17.5",
     "recast": "^0.14.7"
+  },
+  "dependencies": {
+    "f-matches": "^1.0.0"
   }
 }
