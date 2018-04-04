@@ -1,9 +1,3 @@
 {
-  "presets": ["env"],
-  "parserOpts": {
-    "parser": "recast"
-  },
-  "generatorOpts": {
-    "generator": "recast"
-  }
+  "presets": ["env"]
 }

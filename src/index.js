@@ -6,7 +6,6 @@ module.exports = function(babel) {
     visitor: {
       VariableDeclaration: function(path) {
         if (path.parent.type === 'Program') {
-          debugger;
           if (isVarWithRequireCalls(path.node)) {
             let decalrationKind = path.node.kind;
             let declarations = path.node.declarations.map(
