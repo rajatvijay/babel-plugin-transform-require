@@ -88,9 +88,7 @@ describe ('Import CommonJS', () => {
     it ('should ignore require calls inside statements', () => {
       expectNoChange (
         'if (true) {\n' + '  var foo = require("foo");\n' + '}'
-      ).withWarnings ([
-        {line: 2, msg: 'import can only be at root level', type: 'commonjs'},
-      ]);
+      );
     });
 
     it ('should treat require().default as default import', () => {
@@ -108,39 +106,39 @@ describe ('Import CommonJS', () => {
     it ('should recognize default import inside several destructurings', () => {
       expectTransform (
         'var {default: foo, bar: bar} = require("foolib");'
-      ).toReturn ('import foo, {bar} from "foolib";');
+      ).toReturn ('import foo, { bar } from "foolib";');
     });
   });
 
   describe ('named import', () => {
     it ('should convert foo = require().foo to named import', () => {
       expectTransform ('var foo = require("foolib").foo;').toReturn (
-        'import {foo} from "foolib";'
+        'import { foo } from "foolib";'
       );
     });
 
     it ('should convert bar = require().foo to aliased named import', () => {
       expectTransform ('var bar = require("foolib").foo;').toReturn (
-        'import {foo as bar} from "foolib";'
+        'import { foo as bar } from "foolib";'
       );
     });
 
     it ('should convert simple object destructuring to named import', () => {
       expectTransform ('var {foo} = require("foolib");').toReturn (
-        'import {foo} from "foolib";'
+        'import { foo } from "foolib";'
       );
     });
 
     it ('should convert aliased object destructuring to named import', () => {
       expectTransform ('var {foo: bar} = require("foolib");').toReturn (
-        'import {foo as bar} from "foolib";'
+        'import { foo as bar } from "foolib";'
       );
     });
 
     it ('should convert multi-field object destructurings to named imports', () => {
       expectTransform (
         'var {foo, bar: myBar, baz} = require("foolib");'
-      ).toReturn ('import {foo, bar as myBar, baz} from "foolib";');
+      ).toReturn ('import { foo, bar as myBar, baz } from "foolib";');
     });
 
     it ('should ignore array destructuring', () => {
@@ -148,11 +146,11 @@ describe ('Import CommonJS', () => {
     });
 
     it ('should ignore nested object destructuring', () => {
-      expectNoChange ('var {foo: {bar}} = require("foolib");');
+      expectNoChange ('var { foo: { bar } } = require("foolib");');
     });
 
     it ('should ignore destructuring of require().foo', () => {
-      expectNoChange ('var {foo} = require("foolib").foo;');
+      expectNoChange ('var { foo } = require("foolib").foo;');
     });
   });
 
